@@ -1,6 +1,4 @@
 
-
-
 let users = [];
   
 class BankAccount{
@@ -18,8 +16,6 @@ class BankAccount{
         users.push(this)
     }}
 
-    
-// }
 
 BankAccount.prototype. accTypeValidation = function(){
     const valid = ['savings', 'current'];
@@ -28,7 +24,8 @@ BankAccount.prototype. accTypeValidation = function(){
           throw new Error("Invalid account type!");
         }
     }
-     BankAccount.prototype.freeze = function(adminID){
+
+BankAccount.prototype.freeze = function(adminID){
         if(adminID !== this.adminID) return;
             this.isActive = false
             this.message= `${this.name}, Your account has been frozen for violating our rule`
@@ -41,12 +38,10 @@ BankAccount.prototype. deposit = function(amount){
     if(!this.isActive){
          this.message = `Transaction declined.\n${this.name}, Due to your inactive account, you cannot make a transaction.`
          return;
-         
     }
     if(amount <= 0){
        return this.message = `Amount must be greater than 0`
     }
-
         this.accBalance += amount
       }
 
@@ -56,7 +51,6 @@ BankAccount.prototype.withdraw = function(amount){
             this.message = `Transaction declined.\n${this.name}, Due to your inactive account, you cannot make a transaction`
              return;
         }
-
       if(amount <=0){
            return this.message = `${amount} is not a valid amount`
             
@@ -95,13 +89,6 @@ BankAccount.prototype.transfer = function(accName, amount){
              
              
         
-    
-
-
-
-
-
-
 let user1 = new BankAccount('Philip', 2000, 'savings')
 let user2 = new BankAccount('Dom', 6000, 'CURRENT')
 let user3 = new BankAccount('Joe', 10000, 'current')
@@ -116,11 +103,5 @@ let user3 = new BankAccount('Joe', 10000, 'current')
 // user1.withdraw(1500)
 
 user2.transfer('Philip', 100)
-
-
-// console.log(user1)
-// console.log(user2)
-// console.log(user3)
-
 
 console.log(users)
