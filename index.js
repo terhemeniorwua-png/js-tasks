@@ -10,6 +10,7 @@ class BankAccount{
         this.accBalance = amount
         this.isActive =true
         this.accType = String(accType).toLowerCase()
+        this.userSecCode = 4534
         this.accTypeValidation()
         this.acumNumber()
 
@@ -86,6 +87,29 @@ BankAccount.prototype.transfer = function(accName, amount){
             this.message = `Successfully transferred ${amount} to ${accName}
     Time: ${time}`
 }  
+BankAccount.prototype.deactivate = function(code){
+    let valid = [this.adminID, this.userSecCode]
+    if(!valid.includes(code)){
+        this.message = `Unauthorized`
+    } 
+    this.isActive = false;
+    this.message = `Your account has been deactivated. Visit a branch to reactivate it`
+}
+
+BankAccount.prototype.activate = function(code){
+    if(!this.deactivate) return;
+    if(code === this.adminID){
+        this.isActive = true;
+        this.message= `${this.name} Welcome back`
+        return;
+    } else{
+       this.message = `Unauthorized`
+    }
+  
+}
+BankAccount.prototype.unfreeze = function(){
+    this.activate()
+}
              
              
         
@@ -94,14 +118,17 @@ let user2 = new BankAccount('Dom', 6000, 'CURRENT')
 let user3 = new BankAccount('Joe', 10000, 'current')
 
 
-// user1.freeze(100)
+user1.freeze(100)
+user1.activate(100)
 // user1.deposit(10000)
 // user2.deposit(10000)
 // user3.deposit(10000)
 // user1.withdraw(1500)
 // user3.withdraw(1500)
 // user1.withdraw(1500)
+// user1.deactivate(4534)
+// user1.activate(4534)
 
-user2.transfer('Philip', 100)
+user2.transfer('Joe', 100)
 
 console.log(users)
