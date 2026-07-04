@@ -29,7 +29,7 @@ BankAccount.prototype. accTypeValidation = function(){
         }
     }
      BankAccount.prototype.freeze = function(adminID){
-        if(adminID === this.adminID) return;
+        if(adminID !== this.adminID) return;
             this.isActive = false
             this.message= `${this.name}, Your account has been frozen for violating our rule`
 }
@@ -39,10 +39,12 @@ BankAccount.prototype. acumNumber = function(){
 
 BankAccount.prototype. deposit = function(amount){
     if(!this.isActive){
-        this.message = `Transaction declined.\n${this.name}, Due to your inactive account, you cannot fund it.`
+         this.message = `Transaction declined.\n${this.name}, Due to your inactive account, you cannot make a transaction.`
+         return;
+         
     }
     if(amount <= 0){
-        this.message = `Amount must be greater than 0`
+       return this.message = `Amount must be greater than 0`
     }
 
         this.accBalance += amount
@@ -50,39 +52,50 @@ BankAccount.prototype. deposit = function(amount){
 
 
 BankAccount.prototype.withdraw = function(amount){
-   if(!this.isActive) return;
+   if(!this.isActive){
+            this.message = `Transaction declined.\n${this.name}, Due to your inactive account, you cannot make a transaction`
+             return;
+        }
 
       if(amount <=0){
-          this.message = `Invalid amount`
+           return this.message = `${amount} is not a valid amount`
             
             } else if(this.accBalance >= amount){
                this.accBalance -= amount
                let time = new Date()
             this.message = `${amount} successfully withdrawn from your ${this.accType} account  
 Time: ${time}`
-}else{
+} else{
     this.message = `Transaction declined. Insufficient account balance.`
-}
+}}
 
-}
 BankAccount.prototype.transfer = function(accName, amount){
-    users.find(user => {
-        if(user.name === accName && user.isActive === true && this.isActive === true){
-            this.withdraw(amount);
-            user.deposit(amount)
-            user.message=`Credited successfully ${amount} from ${this.name}`
+   
+        if(!this.isActive){
+            this.message = `Transaction declined.\n${this.name}, Due to your inactive account, you cannot make a transaction`
+             return;
+        }
+         else if(amount <=0){
+          this.message = `Sorry, ${amount} is not a valid amount`;
+          return
+        }    
+
+        let receipient = users.find(user => user.name === accName)
+             if(!receipient.name || !receipient.isActive){
+           this.message = `Transaction declined.! Destination not found`
+            return ;
+        }
+           this.withdraw(amount);
+            receipient.deposit(amount)
+            receipient.message=`Credited successfully ${amount} from ${this.name}`
             let time = new Date()
             this.message = `Successfully transferred ${amount} to ${accName}
     Time: ${time}`
-            } 
-            else{
-           this.message = `Transaction declined.! Destination not found`
-         }   
-        }
-    )
+}  
+             
+             
         
-}
-
+    
 
 
 
@@ -98,11 +111,11 @@ let user3 = new BankAccount('Joe', 10000, 'current')
 // user1.deposit(10000)
 // user2.deposit(10000)
 // user3.deposit(10000)
-user1.withdraw(2000)
+// user1.withdraw(1500)
 // user3.withdraw(1500)
 // user1.withdraw(1500)
 
-// user2.transfer('Philip', 10)
+user2.transfer('Philip', 100)
 
 
 // console.log(user1)
