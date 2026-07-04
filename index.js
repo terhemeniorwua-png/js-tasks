@@ -1,36 +1,68 @@
 class BankAccount{
-    constructor(accName, amount){
+    constructor(accName, amount, accType){
         this.name  = accName
         this.accuNum = 0
         this.accBalance = amount
-        this.freeze =false
+        this.isActive =true
+        this.accType = String(accType).toLowerCase()
         this.acumNumber()
         this.withdraw(amount)
         this.deposit(amount)
-        // this.freeze()
+        this.accTypeValidation()
+        this.freeze(accName)
         
+    }
+    accTypeValidation(){
+        if(this.accType === 'savings' || this.accType === 'current'){
+            this.alert = `Welcome ${this.name}`
+        } else{
+            this.Info = `Invalid account type. ${this.name} account creation was not successful.`
+            delete this.accuNum
+            delete this.accType
+            delete this.name
+            delete this.isActive
+            delete this.accBalance
+        }
     }
     acumNumber(){
        this.accuNum += (Math.floor(Math.random() * 1000000000)) 
     }
     withdraw(amount){
-       if(this.accBalance >= amount){
+       if(this.isActive === true){
+        if(this.accBalance >= amount){
         this.accBalance -= amount
        } else{
         this.Info = `Transaction declined. Insufficient account balance.`
        }
+       } else{
+            this.Info = `Transaction declined.\n${this.name}, Due to your inactive account, you cannot make a withdrawal.`
+        }
+    }
+    transfer(){
+        // if()
     }
      deposit(amount){
-        this.accBalance += amount
+        if(this.isActive === true){
+            this.accBalance += amount
+        } else{
+            this.Info = `Transaction declined.\n${this.name}, Due to your inactive account, you cannot not fund it.`
+        }
     }
-    freeze(){
-        this.freeze = true
+    freeze(num){
+        if(this.name === num){
+            this.freeze = true
+            this.isActive = false
+            this.Info= `${this.name}, Your account has been frozen for violating our rule`
+        }
     }
 }
 
 
-let user1 = new BankAccount('phil', 2000)
-user1.deposit(1000)
-user1.withdraw(4000)
-// user1.freeze()
-console.log(user1)
+let user1 = new BankAccount('phil', 2000, 'savings')
+let user2 = new BankAccount('Dom', 6000, 'CURRENT')
+let user3 = new BankAccount('Joe', 10000)
+// user1.deposit(10000)
+user1.withdraw(500)
+// console.log(user1)
+// console.log(user2)
+// console.log(user3)
