@@ -32,7 +32,7 @@ BankAccount.prototype.freeze = function(adminID){
             this.message= `${this.name}, Your account has been frozen for violating our rule`
 }
 BankAccount.prototype. acumNumber = function(){
-       this.accNum = Math.floor(1000000000 + Math.random() * 9000000000)
+       this.accNum = Math.floor(1000000000 + Math.random() * 9999999999)
     }
 
 BankAccount.prototype. deposit = function(amount){
